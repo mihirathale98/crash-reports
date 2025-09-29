@@ -3,7 +3,13 @@ import { BigQuery } from '@google-cloud/bigquery';
 // Initialize BigQuery client
 const bigquery = new BigQuery({
   projectId: process.env.GOOGLE_CLOUD_PROJECT || 'sundai-club-434220',
-  keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS || './sundai-club-434220-8c96234b132c.json',
+  credentials:
+    process.env.GOOGLE_CLIENT_EMAIL && process.env.GOOGLE_PRIVATE_KEY
+      ? {
+          client_email: process.env.GOOGLE_CLIENT_EMAIL,
+          private_key: (process.env.GOOGLE_PRIVATE_KEY as string).replace(/\\n/g, '\n'),
+        }
+      : undefined,
 });
 
 const DATASET_ID = process.env.BIGQUERY_DATASET || 'bostonreports';
