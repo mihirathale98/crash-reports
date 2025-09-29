@@ -1,0 +1,136 @@
+PRD: Reddit Policy Insights Prototype
+1. Product Overview
+
+The project is a policy insight tool that scrapes Reddit discussions relevant to Massachusetts state government agencies. It aggregates, summarizes, and presents these conversations in a concise, news-like format so agency leaders and their immediate staff can understand what citizens are praising or complaining about.
+
+The product is not a policy suggestion engine—it strictly provides raw insights, curated into readable summaries, leaving judgment and prioritization to agency staff.
+
+2. Problem Statement
+
+Massachusetts agencies currently rely on direct grievances submitted via Mass.gov forms, which capture only a fraction of public sentiment. Citizens often vent or share positive experiences on social platforms like Reddit, but agencies lack visibility into these conversations.
+
+Without this tool, policymakers:
+
+Miss early signals of frustration (e.g., long lines, denied services).
+
+Miss opportunities to highlight successes (e.g., streamlined processes).
+
+Rely on fragmented or anecdotal inputs, slowing responsiveness.
+
+3. Target Users
+
+Primary: Mid-level staffers who report to agency heads (policy aides, deputies). They are responsible for surfacing issues and preparing briefs.
+
+Secondary: Agency heads themselves, particularly when they want a snapshot for planning or communications.
+
+Agencies in scope (initial pilot):
+
+HHS (Health and Human Services)
+
+RMV (Registry of Motor Vehicles)
+
+General/other state functions
+
+4. Objectives & Success Metrics
+Objectives
+
+Provide concise, relevant summaries of Reddit discussions for each agency.
+
+Enable filtering by agency and time window (monthly).
+
+Make insights shareable and subscribable, increasing their circulation in decision-making contexts.
+
+Success Metrics (MVP)
+
+Engagement: At least 50% of target users subscribe to monthly updates.
+
+Relevance: >70% of surveyed users rate summaries as “relevant” or “very relevant.”
+
+Actionability (qualitative): Users report using the insights in planning or communications.
+
+5. Key Features (MVP)
+5.1 Core Functionality
+
+Reddit Scraping: Collect posts and comments related to Massachusetts agencies, focusing on the Boston/Massachusetts region.
+
+Agency Filtering: Users select their agency (e.g., RMV, HHS, General).
+
+Summarized Insights: Top 3 insights per agency per month, written as concise, newsletter-style blurbs (markdown text).
+
+Sentiment Classification: Labeled as positive, negative, or neutral.
+
+5.2 User Experience
+
+Dashboard/Feed: A clean, minimal interface resembling a “policy newsletter.”
+
+Date Selector: Choose reporting period (default = most recent month).
+
+Source Linking: Each insight links back to the original Reddit thread.
+
+5.3 Distribution
+
+Subscriptions: Users can subscribe for monthly updates via email.
+
+Sharing: One-click share to copy or email a specific insight/report.
+
+6. Non-Goals (for MVP)
+
+No policy recommendations: The tool surfaces issues but does not propose actions.
+
+No deep analytics or comparisons: No trendline comparisons across months in MVP.
+
+No integrations with Mass.gov or internal systems (only email export for now).
+
+7. Future Enhancements (Post-MVP)
+
+Sentiment Graphs: Visual breakdown of positive vs. negative sentiment over time.
+
+Topic Categorization: Automatic grouping of issues (e.g., “licensing delays,” “health insurance coverage”).
+
+Cross-agency Comparison: Ability to compare sentiment across agencies.
+
+Automated Alerting: Real-time or weekly alerts for spikes in mentions.
+
+8. Technical Considerations
+
+Data Source: Reddit API + custom scrapers (Boston/Massachusetts-relevant subreddits and threads).
+
+Processing: NLP models for sentiment analysis and summarization.
+
+Frontend: Lightweight web app (React or similar) with simple authentication.
+
+Output Format: Markdown text with optional tables for structured metrics (future).
+
+9. User Workflow
+
+User logs into the tool.
+
+Selects agency (HHS, RMV, General).
+
+Selects month (default = most recent).
+
+Views a summary page with:
+
+Top 3 insights (short, blog-like blurbs).
+
+Labels (positive/negative).
+
+Links to Reddit sources.
+
+Optionally subscribes for future updates or shares a report via email.
+
+10. Risks & Mitigations
+
+Relevance risk: Reddit chatter may not map cleanly to agency mandates. → Mitigation: human curation for first prototypes.
+
+Data consistency risk: Volume may vary drastically month to month. → Mitigation: always present “Top 3” regardless of volume.
+
+Adoption risk: Busy staffers may not adopt. → Mitigation: email subscriptions and lightweight summaries (newsletter style).
+
+11. Prototype KPI
+
+The prototype’s KPI is perceived usefulness:
+
+Do agency staff find the insights relevant and actionable?
+
+Measured via short user feedback surveys after the first month of use.

@@ -1,0 +1,16 @@
+node_modules
+dist
+.DS_Store
+server/public
+vite.config.ts.*
+*.tar.gz
+
+# Service account credentials - never commit these!
+*.json
+!package*.json
+!components.json
+
+# Replit/IDE files
+.local/
+.replit
+replit.md
