@@ -1,15 +1,72 @@
 import { BigQuery } from '@google-cloud/bigquery';
 
+function resolveGoogleCredentials(): { client_email: string; private_key: string } | undefined {
+  try {
+    // 1) Full JSON as env (plain JSON)
+    if (process.env.GOOGLE_CREDENTIALS) {
+      const json = JSON.parse(process.env.GOOGLE_CREDENTIALS as string);
+      if (json.client_email && json.private_key) {
+        return {
+          client_email: json.client_email,
+          private_key: String(json.private_key),
+        };
+      }
+    }
+
+    // 2) Full JSON as env (base64)
+    if (process.env.GOOGLE_CREDENTIALS_BASE64) {
+      const decoded = Buffer.from(process.env.GOOGLE_CREDENTIALS_BASE64, 'base64').toString('utf8');
+      const json = JSON.parse(decoded);
+      if (json.client_email && json.private_key) {
+        return {
+          client_email: json.client_email,
+          private_key: String(json.private_key),
+        };
+      }
+    }
+
+    // 3) Separate email + key envs (key may be PEM, escaped PEM, or base64)
+    const clientEmail = process.env.GOOGLE_CLIENT_EMAIL;
+    let privateKey = process.env.GOOGLE_PRIVATE_KEY || process.env.GCP_PRIVATE_KEY;
+
+    if (clientEmail && privateKey) {
+      // Remove wrapping quotes if present
+      if ((privateKey.startsWith('"') && privateKey.endsWith('"')) || (privateKey.startsWith('\'') && privateKey.endsWith('\''))) {
+        privateKey = privateKey.substring(1, privateKey.length - 1);
+      }
+
+      // If base64, decode to UTF-8
+      const maybeDecoded = (() => {
+        try {
+          const decoded = Buffer.from(privateKey as string, 'base64').toString('utf8');
+          return decoded.includes('BEGIN') && decoded.includes('PRIVATE KEY') ? decoded : null;
+        } catch {
+          return null;
+        }
+      })();
+
+      let normalized = maybeDecoded || (privateKey as string);
+
+      // Replace escaped newlines with real newlines
+      normalized = normalized.replace(/\\n/g, '\n');
+
+      return {
+        client_email: clientEmail,
+        private_key: normalized,
+      };
+    }
+  } catch {
+    // Fall through to ADC
+  }
+
+  // 4) Nothing usable provided -> let ADC handle it
+  return undefined;
+}
+
 // Initialize BigQuery client
 const bigquery = new BigQuery({
   projectId: process.env.GOOGLE_CLOUD_PROJECT || 'sundai-club-434220',
-  credentials:
-    process.env.GOOGLE_CLIENT_EMAIL && process.env.GOOGLE_PRIVATE_KEY
-      ? {
-          client_email: process.env.GOOGLE_CLIENT_EMAIL,
-          private_key: (process.env.GOOGLE_PRIVATE_KEY as string).replace(/\\n/g, '\n'),
-        }
-      : undefined,
+  credentials: resolveGoogleCredentials(),
 });
 
 const DATASET_ID = process.env.BIGQUERY_DATASET || 'bostonreports';
