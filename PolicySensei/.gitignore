@@ -9,6 +9,7 @@ vite.config.ts.*
 *.json
 !package*.json
 !components.json
+!vercel.json
 
 # Replit/IDE files
 .local/
